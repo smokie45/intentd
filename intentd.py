@@ -53,6 +53,11 @@ def on_log( client, userdata, level, buf):
 
 
 my_parser = argparse.ArgumentParser(description='intend: Handling intents received via Hermes MQTT')
+my_parser.add_argument('--handlers',
+                       required=False,
+                       type=str,
+                       default="handlers",
+                       help='Set directory for handlers (Default: handlers]')
 
 my_parser.add_argument('--server',
                        required=False,
@@ -85,7 +90,7 @@ logging.basicConfig(
 log = logging.getLogger( __name__ )
 
 # find and instanciate plugins
-mgr = PluginManager.PluginManager( 'handlers', 'handle_' )
+mgr = PluginManager.PluginManager( args.handlers, 'handle_' )
 
 # create mqtt client
 mqttC              = mqtt.Client( client_id = myName, userdata=mgr )

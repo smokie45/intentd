@@ -31,8 +31,11 @@ class PluginManager:
         files = os.listdir( self.plugindir )
         for f in files:
             if f.startswith( self.pluginprefix ):
-                f = f.removeprefix( self.pluginprefix )
-                f = f.removesuffix( '.py' )
+                # requires python 3.9
+                # f = f.removeprefix( self.pluginprefix )
+                # f = f.removesuffix( '.py' )
+                f = f.lstrip( self.pluginprefix )
+                f = f.rstrip( '.py' )
                 self.plugins.append( f)
 
     # Instanciate all known plugins 
