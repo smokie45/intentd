@@ -4,6 +4,7 @@ Requires=mosquitto.service
 After=mosquitto.service
 
 [Service]
+WorkingDirectory=/usr/bin/intentd
 ExecStart=/usr/bin/intentd/intentd.py
 
 [Install]
