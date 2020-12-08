@@ -1,0 +1,10 @@
+[Unit]
+Description="Intentd - a deamon for intents"
+Requires=mosquitto.service
+After=mosquitto.service
+
+[Service]
+ExecStart=/usr/bin/intentd/intentd.py
+
+[Install]
+WantedBy=multi-user.target
