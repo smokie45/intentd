@@ -11,7 +11,7 @@ Intend can react to intent triggers from [HERMES](https://snips.gitbook.io/tutor
 * make intentd a singleton to allow subsequent call to configure without starting new instance
 ** include option to force having 2nd instance
 * handlers
-** Teatimer
-** Tagesrückblick
-** Meine Termine
+  * Teatimer
+  * Tagesrückblick
+  * Meine Termine
 
