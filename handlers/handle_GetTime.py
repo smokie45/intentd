@@ -4,9 +4,9 @@ import datetime
 
 class GetTime( IntentHandler ):
     noReaction = False
-    def handle(self, name, data):
+    def handle(self ):
         now = datetime.datetime.now()
-        self.speak( "Es ist " + self.t2str(now.hour, now.minute ))
+        return ( "Es ist " + self.t2str(now.hour, now.minute ))
 
 
     # convert hour and minute into a string 

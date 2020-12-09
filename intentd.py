@@ -27,9 +27,7 @@ def on_mqtt( client, userdata, msg ):
         # get plugin instance for intant
         o = userdata.getPlugin( intent )
         if o:
-            o.setData( msg.payload )
-            o.handle( intent, msg.payload)
-            answer = o.getAnswer()
+            answer = o.doHandle( msg.payload)
             if answer:
                 client.publish('hermes/tts/say', answer )
         else:
@@ -52,39 +50,46 @@ def on_log( client, userdata, level, buf):
         log.debug("on_log: " + buf)
 
 
-my_parser = argparse.ArgumentParser(description='intend: Handling intents received via Hermes MQTT')
-my_parser.add_argument('--handlers',
-                       required=False,
-                       type=str,
-                       default="handlers",
-                       help='Set directory for handlers (Default: handlers]')
-
-my_parser.add_argument('--server',
-                       required=False,
-                       type=str,
-                       default="legolas:1883",
-                       help='Address of MQTT server [NAME:PORT]')
-my_parser.add_argument('--log',
-                       required=False,
-                       type=str,
-                       default="ERROR",
-                       help='Set loglevel to [DEBUG, INFO, ..]')
-
 # get name of program. Remove prefixed path and postfixed fileytpe
 myName = sys.argv[0]
 myName = myName[ myName.rfind('/')+1: ]
 myName = myName[ : myName.find('.')]
-print("Started " + myName )
+
+my_parser = argparse.ArgumentParser(description='intend: Handling intents received via Hermes MQTT')
+my_parser.add_argument('--handlers',
+    required=False,
+    type=str,
+    default="handlers",
+    help='Set directory for handlers (Default: handlers]')
+
+my_parser.add_argument('--server',
+    required=False,
+    type=str,
+    default="legolas:1883",
+    help='Address of MQTT server [NAME:PORT]')
+my_parser.add_argument('--log',
+    required=False,
+    type=str,
+    default="ERROR",
+    help='Set loglevel to [DEBUG, INFO, ..]')
+my_parser.add_argument('--logfile',
+    required=False,
+    type=str,
+    default='/tmp/intentd.log',
+    help='Set logfile name and directory (Default: /tmp/intentd.log')
 args = my_parser.parse_args()
 
+print("Started " + myName )
+
+#TODO: handle logdir option. Use STDOUT for console
 logging.basicConfig(
     format='%(levelname)7s: %(message)s',
     level = getattr(logging, args.log.upper()),
     handlers=[
-        logging.handlers.RotatingFileHandler('/tmp/'+myName+'.log', \
-                                             maxBytes=2000,         \
-                                             backupCount=1)
-        #logging.StreamHandler(sys.stdout),
+        logging.StreamHandler(sys.stdout),
+        # logging.handlers.RotatingFileHandler('/tmp/'+myName+'.log', \
+                                             # maxBytes=2000,         \
+                                             # backupCount=1)
     ]
 )
 log = logging.getLogger( __name__ )

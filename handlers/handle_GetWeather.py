@@ -9,7 +9,7 @@ import urllib.request
 
 class GetWeather( IntentHandler ):
     noReaction = False              # flag to disable answering
-    def handle(self, name, data):
+    def handle( self ):
         # time = self.intent["entity"][0]["value"]
         time = self.intent["slots"][0]["value"]
         url = 'https://www.dwd.de/DWD/wetter/wv_allg/deutschland/text/vhdl13_dwhg.html'
@@ -51,7 +51,7 @@ class GetWeather( IntentHandler ):
             txt = out[2]
         else:
             txt = out[0]
-        self.speak( txt )
+        return txt 
 
 
 if __name__ == "__main__":

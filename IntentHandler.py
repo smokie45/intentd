@@ -10,34 +10,34 @@ class IntentHandler:
     siteId = None
     noReaction = False
 
-    # forward some JSON data to intent handler
-    def setData( self, data):
+    # triggered when intent was activated. Data will be provided. On return, an answer is provided 
+    def doHandle( self, data):
         # TODO: verify that handler mataches 'intent' before importing
         self.intent = json.loads( data )
         self.siteId = self.intent['siteId']
-        # extract basic values (e.g. siteId, ..)
+        answer = self.handle()
+        if answer:
+            answer = json.dumps( { 'text' : answer, 'siteId' : self.siteId } )
+        return answer
 
     # get JSON data from intent handler
-    def getData( self ):
-        return  self.intent 
+    # def getData( self ):
+    #     return  self.intent 
+    #
+    # # get a reply from inent handler. This can be called after a handler has bVeen executed.
+    # # TODO: better to use return value of handle() ?
+    # def getAnswer( self ):
+    #     if self.noReaction:
+    #         log.info( 'Handler configured to not react!')
+    #         return None
+    #     return self.answer 
+    #
+    # # convert given text to JSON and store in answer
+    # def speak( self, text):
+    #     a = { "text" : text, "siteId" : self.siteId }
+    #     self.answer = json.dumps( a )
 
-    # get a reply from inent handler. This can be called after a handler has been executed.
-    # TODO: better to use return value of handle() ?
-    def getAnswer( self ):
-        if self.noReaction:
-            log.info( 'Handler configured to not react!')
-            return None
-        return self.answer 
-
-    # convert given text to JSON and store in answer
-    def speak( self, text):
-        a = { "text" : text, "siteId" : self.siteId }
-        self.answer = json.dumps( a )
-
-    # function, which is implemented individually by handler and called from external
-    # on intent activation.
-    # TODO: better to split external trigger call X. X prepares data and calls internal handle(). 
-    #       Handle() still implemented by plugin
-    def handle( self, name, data ):
+    # function, which is implemented individually by handler 
+    def handle( self ):
         print('No default handling')
 
