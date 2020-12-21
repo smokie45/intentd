@@ -11,4 +11,6 @@ Intend can react to intent triggers from [HERMES](https://snips.gitbook.io/tutor
 * use inotify to get aware on new handlers
 * make intentd a singleton to allow subsequent call to configure without starting new instance
 ** include option to force having 2nd instance
+* add threadding or async loops for handlers
+* add some diagrams :https://github.com/shd101wyy/markdown-preview-enhanced/blob/master/docs/diagrams.md
 
