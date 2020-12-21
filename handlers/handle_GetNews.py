@@ -6,20 +6,19 @@ from IntentHandler import IntentHandler
 import feedparser
 import hashlib
 
-# done = ['658ed991f60d5322cc3e02e7b5fb7385', '8a037614c681719a994f237311f925d7', '78823845ff624abebab95ee185eeddc3']
 class GetNews( IntentHandler ):
     noReaction = False              # flag to disable answering
     url = 'https://www.tagesschau.de/xml/atom/'
     done = [] # list of hashes from entries already played
 
     def handle( self ):
-
+        # get number of news slot
         n = self.intent["slots"][0]["value"]["value"]
         reply=''
+        # get number of news and concate them
         for x in range( n ):
             reply += self.getNewItem( self.url ) + ".\n\n"
         return reply
-        # return self.getNewItem( self.url )
 
     def getNewItem( self, url ):
         d = feedparser.parse( url )
