@@ -1,6 +1,9 @@
 #!/bin/python
 from IntentHandler import IntentHandler 
 # set PYTHONPATH to parent directory for testing !!
+import logging
+log = logging.getLogger( __name__ )
+
 import random
 
 class Test( IntentHandler ):

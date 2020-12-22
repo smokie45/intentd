@@ -41,8 +41,8 @@ def on_connect(client, userdata, flags, rc):
         log.error("on_connect: failed to connect to mqtt server")
 
 # callback on subsription to an mqtt topic
-def on_subscribe( client, userdata, mid, granted_qos):
-    log.debug("on_subscribe:")
+# def on_subscribe( client, userdata, mid, granted_qos):
+#     log.debug("on_subscribe:")
 
 # callback for paho-mqtt internal logging
 def on_log( client, userdata, level, buf):
@@ -83,6 +83,7 @@ print("Started " + myName )
 
 #TODO: handle logdir option. Use STDOUT for console
 logging.basicConfig(
+    # format='%(name) [%(levelname)7s]: %(message)s',
     format='%(levelname)7s: %(message)s',
     level = getattr(logging, args.log.upper()),
     handlers=[
@@ -102,7 +103,7 @@ mqttC              = mqtt.Client( client_id = myName, userdata=mgr )
 mqttC.isConnected  = False      # connection flag
 mqttC.on_connect   = on_connect
 mqttC.on_message   = on_mqtt
-mqttC.on_subscribe = on_subscribe
+# mqttC.on_subscribe = on_subscribe
 mqttC.on_log       = on_log
 mqttC.loop_start()              # create rx/tx thread in background
 

@@ -2,6 +2,8 @@
 
 from IntentHandler import IntentHandler 
 # set PYTHONPATH to parent directory for testing !!
+import logging
+log = logging.getLogger( 'GetNews' )
 
 import feedparser
 import hashlib
@@ -13,7 +15,8 @@ class GetNews( IntentHandler ):
 
     def handle( self ):
         # get number of news slot
-        n = self.intent["slots"][0]["value"]["value"]
+        n = int(self.intent["slots"][0]["value"]["value"])
+        log.debug('Num of news to speak:=' + str(n))
         reply=''
         # get number of news and concate them
         for x in range( n ):
@@ -36,8 +39,7 @@ class GetNews( IntentHandler ):
         # find first item, where hash is not in done list
         for item in d.entries:
             h = hashlib.md5( item.description.encode() ).hexdigest()
-            # print("Hash is " + h)
-            # print("done is: "+ str(self.done) )
+            log.debug('News hash is:' + h + ' - done is:'+ str(self.done) )
             if h not in self.done:
                 self.done.append( h )    # add new hash to done list
                 # print( item.title + '[' + item.updated+ ']' )
