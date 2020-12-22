@@ -4,6 +4,12 @@ Requires=mosquitto.service
 After=mosquitto.service
 
 [Service]
+User=intentd
+Group=intentd
+DynamicUser=true
+LogsDirectory=intentd
+StateDirectory=intentd
+
 WorkingDirectory=/usr/bin/intentd
 ExecStart=/usr/bin/intentd/intentd.py
 
