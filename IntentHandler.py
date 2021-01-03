@@ -6,7 +6,7 @@ log = logging.getLogger( 'IntentHandler'  )
 
 class IntentHandler:
     intent = None       # full intent data
-    slots  = None       # dict of slots
+    slots  = {}         # dict of slots
     answer = None       # reply given by handler
     siteId = None       # the rhasspy siteID 
     noReaction = False
@@ -19,8 +19,8 @@ class IntentHandler:
         # log.debug(">-- SLOT EXTRACTION ---")
         # extract slots from intents to make them easy accessible
         for s in self.intent['slots']:
-            log.debug("  SLOT="+ s['entity'] + ", value=" + s['value']['value'] )
-            self.slots[ s['entity'] ] = s['value']['value']
+            log.debug("  SLOT="+ s['slotName'] + ", value=" + str(s['value']['value']) )
+            self.slots[ s['slotName'] ] = str(s['value']['value'])
         # log.debug("<-- SLOT EXTRACTION ---")
         self.answer = self.handle()
         if self.answer:

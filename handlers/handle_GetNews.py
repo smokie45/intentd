@@ -16,8 +16,7 @@ class GetNews( IntentHandler ):
 
     def handle( self ):
         # get number of news slot
-        # n = int(self.intent["slots"][0]["value"]["value"])
-        n = self.slots['News']
+        n = int(self.slots['News'])
         log.info('Num of news to speak:=' + str(n))
         reply=''
         # get number of news and concate them
