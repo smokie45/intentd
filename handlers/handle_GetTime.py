@@ -20,11 +20,15 @@ class GetTime( IntentHandler ):
         elif min == 45:
             s = "viertel vor " + str((hour % 12)+1)
         elif min == 30: 
-            s = "halb " + str(hour)
+            s = "halb "  + str((hour % 12)+1)
+        elif min == 1:
+            s = "eine Minute nach " + str(hour)
         elif min <= 30:
-            s = str(min) + " minuten nach " + str(hour)
+            s = str(min) + " Minuten nach " + str(hour)
+        elif min == 59:
+            s = "eine Minute vor " + str((hour % 12) +1 )
         elif min > 30:  
-            s = str(60-min) + " minuten vor " + str((hour % 12) +1 )
+            s = str(60-min) + " Minuten vor " + str((hour % 12) +1 )
         return s
 
 

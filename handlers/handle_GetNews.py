@@ -1,5 +1,6 @@
 #!/bin/python
-
+# This intent handler will fetch a given number of new via RSS from tageschau.de
+# A hash of each played news is stored, to avoid a news is played twice.
 from IntentHandler import IntentHandler 
 # set PYTHONPATH to parent directory for testing !!
 import logging
@@ -15,11 +16,13 @@ class GetNews( IntentHandler ):
 
     def handle( self ):
         # get number of news slot
-        n = int(self.intent["slots"][0]["value"]["value"])
-        log.debug('Num of news to speak:=' + str(n))
+        # n = int(self.intent["slots"][0]["value"]["value"])
+        n = self.slots['News']
+        log.info('Num of news to speak:=' + str(n))
         reply=''
         # get number of news and concate them
         for x in range( n ):
+            # get 'n' news and concate them as one string
             reply += self.getNewItem( self.url ) + ".\n\n"
         return reply
 

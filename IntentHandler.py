@@ -5,9 +5,10 @@ import logging
 log = logging.getLogger( 'IntentHandler'  )
 
 class IntentHandler:
-    intent = None
-    answer = None
-    siteId = None
+    intent = None       # full intent data
+    slots  = None       # dict of slots
+    answer = None       # reply given by handler
+    siteId = None       # the rhasspy siteID 
     noReaction = False
 
     # triggered when intent was activated. Data will be provided. On return, an answer is provided 
@@ -15,10 +16,18 @@ class IntentHandler:
         # TODO: verify that handler mataches 'intent' before importing
         self.intent = json.loads( data )
         self.siteId = self.intent['siteId']
-        answer = self.handle()
-        if answer:
-            answer = json.dumps( { 'text' : answer, 'siteId' : self.siteId } )
-        return answer
+        # log.debug(">-- SLOT EXTRACTION ---")
+        # extract slots from intents to make them easy accessible
+        for s in self.intent['slots']:
+            log.debug("  SLOT="+ s['entity'] + ", value=" + s['value']['value'] )
+            self.slots[ s['entity'] ] = s['value']['value']
+        # log.debug("<-- SLOT EXTRACTION ---")
+        self.answer = self.handle()
+        if self.answer:
+            # answer is not 'None', add siteID
+            self.answer = json.dumps( { 'text' : self.answer, 'siteId' : self.siteId } )
+
+        return self.answer
 
     # get JSON data from intent handler
     # def getData( self ):

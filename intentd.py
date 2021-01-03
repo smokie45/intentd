@@ -67,33 +67,31 @@ my_parser.add_argument('--server',
     type=str,
     default="legolas:1883",
     help='Address of MQTT server [NAME:PORT]')
-my_parser.add_argument('--log',
-    required=False,
-    type=str,
-    default="ERROR",
-    help='Set loglevel to [DEBUG, INFO, ..]')
-my_parser.add_argument('--logfile',
-    required=False,
-    type=str,
-    default='/tmp/intentd.log',
-    help='Set logfile name and directory (Default: /tmp/intentd.log')
+my_parser.add_argument('--verbose',
+                       required=False,
+                       type=str,
+                       default="ERROR",
+                       metavar='LEVEL',
+#                       choices= ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+                       help='Set loglevel to [DEBUG, INFO, ..]')
+my_parser.add_argument('--log2file',
+                       required=False,
+                       action='store_true',
+                       help='If given, logs are copied to file \'/tmp/' + myName + '.log\'')
 args = my_parser.parse_args()
-
 print("Started " + myName )
 
-#TODO: handle logdir option. Use STDOUT for console
+# setup loggers
 logging.basicConfig(
-    # format='%(name) [%(levelname)7s]: %(message)s',
     format='%(levelname)7s: %(message)s',
-    level = getattr(logging, args.log.upper()),
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        # logging.handlers.RotatingFileHandler('/tmp/'+myName+'.log', \
-                                             # maxBytes=2000,         \
-                                             # backupCount=1)
-    ]
+    level = getattr(logging, args.verbose.upper())
 )
 log = logging.getLogger( __name__ )
+#log.addHandler( logging.StreamHandler(sys.stdout) )
+if args.log2file:
+    print('Logging to: /tmp/'+myName+'/.log')
+    #TODO: add timestamps
+    log.addHandler( logging.handlers.RotatingFileHandler('/tmp/'+myName+'.log', maxBytes=2000,  backupCount=1))
 
 # find and instanciate plugins
 mgr = PluginManager.PluginManager( args.handlers, 'handle_' )
@@ -129,7 +127,7 @@ try:
         time.sleep(1)
 except KeyboardInterrupt:
     state='stop'
-    time.sleep(2)
+    time.sleep(1)
     mqttC.loop_stop()
     mqttC.disconnect()
 print('Terminated')

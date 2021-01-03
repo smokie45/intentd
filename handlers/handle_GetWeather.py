@@ -3,6 +3,8 @@
 # german DWD, do some parsing and return the text as speech.
 from IntentHandler import IntentHandler 
 # set PYTHONPATH to parent directory for testing !!
+import logging
+log = logging.getLogger( 'GetNews' )
 
 import re
 import urllib.request
@@ -10,8 +12,7 @@ import urllib.request
 class GetWeather( IntentHandler ):
     noReaction = False              # flag to disable answering
     def handle( self ):
-        # time = self.intent["entity"][0]["value"]
-        time = self.intent["slots"][0]["value"]
+        time = self.slots['wetter']
         url = 'https://www.dwd.de/DWD/wetter/wv_allg/deutschland/text/vhdl13_dwhg.html'
         req = urllib.request.Request( url )
         response = urllib.request.urlopen(req)
@@ -118,9 +119,7 @@ if __name__ == "__main__":
         "wakewordId": "picovoice", 
         "lang": null
     }'''
-
+    log.setLevel( logging.DEBUG)
     o = GetWeather()
-    o.setData( input )
-    print( o.getData() )
-    o.handle( 'GetWeather', input )
-    print( o.getAnswer() )
+    o.doHandle( input )
+    print( o.answer )
